@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure.Storage.Queues;
+using System.Runtime.InteropServices.Marshalling;
+using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace assignment3_tickethub.Controllers
@@ -23,69 +26,24 @@ namespace assignment3_tickethub.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(TicketHub ticketHub)
+        public async Task<IActionResult> Post(TicketHub tickethub)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid == false)
             {
-                return BadRequest(ModelState);  
+                return BadRequest(ModelState);
             }
+            string queueName = "tickethub";
+            string? connectionString = _configuration["AzureStorageConnectionString"];
+            QueueClient queueClient = new QueueClient(connectionString, queueName);
 
-            // Additional custom validation (if necessary)
-            if (ticketHub.ConcertId <= 0)
-            {
-                return BadRequest("Concert Id is invalid.");
-            }
-            if (string.IsNullOrEmpty(ticketHub.Email))
-            {
-                return BadRequest("Email is invalid.");
-            }
-            if (string.IsNullOrEmpty(ticketHub.Name))
-            {
-                return BadRequest("Name is invalid.");
-            }
-            if (ticketHub.Quantity <= 0)
-            {
-                return BadRequest("Quantity must be greater than 0.");
-            }
+            // serialize an object to json
+            //string message = JsonSerializer.Serialize(tickethub);
 
-            // Check if CreditCard is valid
-            if (string.IsNullOrEmpty(ticketHub.CreditCard) || ticketHub.CreditCard.Length != 16)
-            {
-                return BadRequest("Credit Card number must be 16 digits.");
-            }
+            // send string message to queue
+            await queueClient.SendMessageAsync("Hello from my ASP app!!!");
 
-            if (string.IsNullOrEmpty(ticketHub.Expiration) || !System.Text.RegularExpressions.Regex.IsMatch(ticketHub.Expiration, @"^(0[1-9]|1[0-2])\/(\d{2})$"))
-            {
-                return BadRequest("Expiration date must be in MM/YY format.");
-            }
-
-            if (string.IsNullOrEmpty(ticketHub.SecurityCode) || ticketHub.SecurityCode.Length != 3)
-            {
-                return BadRequest("Security Code must be 3 digits.");
-            }
-
-            if (string.IsNullOrEmpty(ticketHub.Address))
-            {
-                return BadRequest("Address is required.");
-            }
-            if (string.IsNullOrEmpty(ticketHub.City))
-            {
-                return BadRequest("City is required.");
-            }
-            if (string.IsNullOrEmpty(ticketHub.Province))
-            {
-                return BadRequest("Province is required.");
-            }
-            if (string.IsNullOrEmpty(ticketHub.PostalCode))
-            {
-                return BadRequest("PostalCode is required.");
-            }
-            if (string.IsNullOrEmpty(ticketHub.Country))
-            {
-                return BadRequest("Country is required.");
-            }
-
-            return Ok($"Hello {ticketHub.Name}, your ticket purchase request was successfully received.");
+            return Ok("Success- message posted to Storge Queue");
         }
+
     }
 }
