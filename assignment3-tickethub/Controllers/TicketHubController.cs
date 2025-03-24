@@ -37,10 +37,10 @@ namespace assignment3_tickethub.Controllers
             QueueClient queueClient = new QueueClient(connectionString, queueName);
 
             // serialize an object to json
-            //string message = JsonSerializer.Serialize(tickethub);
+            string message = JsonSerializer.Serialize(tickethub);
 
             // send string message to queue
-            await queueClient.SendMessageAsync("Hello from my ASP app!!!");
+            await queueClient.SendMessageAsync(message);
 
             return Ok("Success- message posted to Storge Queue");
         }
