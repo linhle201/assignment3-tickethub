@@ -6,7 +6,7 @@ namespace assignment3_tickethub
     {
 
         [Required]
-        public int ConcertId { get; set; }
+        public int ConcertId = 0;
 
         [Required]
         [EmailAddress]
@@ -18,31 +18,31 @@ namespace assignment3_tickethub
         [Phone]
         public string Phone { get; set; } = string.Empty;
 
-        [Range(1, 10)]  
-        public int Quantity { get; set; } 
+        
+        public int Quantity = 0; 
 
         [Required]
-        public string CreditCard { get; set; }
+        public string CreditCard { get; set; } = string.Empty;
 
         [Required]
-        public string Expiration { get; set; }
+        public string Expiration { get; set; } = string.Empty;
 
         [Required]
-        public string SecurityCode { get; set; }
+        public string SecurityCode { get; set; } = string.Empty;
 
         [Required]
-        public string Address { get; set; }
+        public string Address { get; set; } = string.Empty;
 
         [Required]
-        public string City { get; set; }
+        public string City { get; set; } = string.Empty;
 
         [Required]
-        public string Province { get; set; }
+        public string Province { get; set; } = string.Empty;
 
         [Required]
-        public string PostalCode { get; set; }
+        public string PostalCode { get; set; } = string.Empty;
 
         [Required]
-        public string Country { get; set; }
+        public string Country { get; set; } = string.Empty;
     }
 }
