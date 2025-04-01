@@ -26,12 +26,12 @@ namespace assignment3_tickethub
         [CreditCard]
         public string CreditCard { get; set; } = string.Empty;
 
-        // Custom validation might be required for expiration dates
+        
         [Required]
         [RegularExpression(@"^(0[1-9]|1[0-2])\/\d{2}$", ErrorMessage = "Invalid expiration date format. Use MM/YY.")]
         public string Expiration { get; set; } = string.Empty;
 
-        // Custom validation might be required for security codes
+        
         [Required]
         [RegularExpression(@"^\d{3}$", ErrorMessage = "Invalid security code. Must be 3 digits.")]
         public string SecurityCode { get; set; } = string.Empty;
@@ -46,7 +46,7 @@ namespace assignment3_tickethub
         public string Province { get; set; } = string.Empty;
 
         [Required]
-        [RegularExpression(@"^\d{5}(-\d{4})?$", ErrorMessage = "Invalid postal code format.")]
+        [RegularExpression(@"(^\d{5}(-\d{4})?$)|(^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$)", ErrorMessage = "Invalid postal code format.")]
         public string PostalCode { get; set; } = string.Empty;
 
         [Required]
