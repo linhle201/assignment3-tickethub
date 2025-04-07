@@ -3,6 +3,7 @@ using System.Runtime.InteropServices.Marshalling;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace assignment3_tickethub.Controllers
 {
@@ -39,8 +40,8 @@ namespace assignment3_tickethub.Controllers
             // serialize an object to json
             string message = JsonSerializer.Serialize(tickethub);
 
-            // send string message to queue
-            await queueClient.SendMessageAsync(message);
+            var plainTextBytes = Encoding.UTF8.GetBytes(message);
+            await queueClient.SendMessageAsync(Convert.ToBase64String(plainTextBytes));
 
             return Ok("Success- message posted to Storge Queue");
         }
